@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.disenoPatrones.dto.Login;
@@ -51,21 +52,42 @@ public class mainController {
     }
 
     @GetMapping("/registro")
-    public String mostrarVistaRegistrarUsuario(Model model) {
+    public String mostrarVistaRegistro(Model model) {
         model.addAttribute("usuario", new usuario());
+        model.addAttribute("usuarios", usuarioRepository.findAll());
         return "registro";
     }
-
-    @PostMapping("/guardar")
-    public String registrarUsuario(@ModelAttribute("usuario") usuario usuario) {
+    
+    @PostMapping("/usuarios/save")
+    public String guardarOActualizarUsuario(@ModelAttribute("usuario") usuario usuario) {
         try {
             usuarioRepository.save(usuario);
         } catch(Exception e) {
-            return "redirect:/registrar";
+            return "redirect:/registro";
         }
-        
-        return "redirect:/index";
+        return "redirect:/registro";
     }
+
+
+
+    // Eliminar usuario
+    @PostMapping("/usuarios/eliminar/{id}")
+    public String eliminarUsuario(@PathVariable Integer id) {
+        usuarioRepository.deleteById(id);
+        return "redirect:/registro";
+    }
+    
+    // Método para editar usuario
+    @GetMapping("/usuarios/edit/{id}")
+    public String editarUsuario(@PathVariable Integer id, Model model) {
+        usuario usuario = usuarioRepository.findById(id)
+                               .orElseThrow(() -> new IllegalArgumentException("ID de usuario inválido:" + id));
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("usuarios", usuarioRepository.findAll());
+        return "registro";
+    }
+
+    
 
     @GetMapping("/principal")
     public String principal(Model model) {
