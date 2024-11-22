@@ -77,7 +77,6 @@ public class mainController {
         return "redirect:/registro";
     }
     
-    // Método para editar usuario
     @GetMapping("/usuarios/edit/{id}")
     public String editarUsuario(@PathVariable Integer id, Model model) {
         usuario usuario = usuarioRepository.findById(id)
