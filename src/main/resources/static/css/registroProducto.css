@@ -1,0 +1,247 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Roboto', sans-serif;
+    background: rgb(255, 254, 254);
+}
+
+header{
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: space-between; 
+    background: #1b378d;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding-bottom: 20px;
+    padding-top: 20px;
+    padding-left: 30px;
+    padding-right: 60px;
+    height: 70px;
+}
+
+header p{
+    color: white;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 30px;
+    font-weight: 500;
+    margin-left: 30px;
+}
+
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative; /* Asegura que el dropdown-menu se posicione en relación a este contenedor */
+}
+
+.user-menu p {
+    color: white;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 50px; /* Esto asegura que el menú se coloque justo debajo del header o botón */
+    right: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 4px 8px 16px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    width: 180px;
+    border-radius: 8px;
+    margin-right: -54px;
+}
+
+.dropdown-menu a {
+    color: black;
+    padding: 12px 16px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-menu a:hover {
+    background-color: #b2b9d5;
+    border-radius: 8px;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    margin-left: 60px;
+    margin-right: 60px;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+form h1{
+    font-size: 30px;
+    color: #1D039C;
+    font-weight: bold;
+    font-family:"Kanit",Arial, Helvetica, sans-serif;
+    margin-left: 80px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.container{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    background: white;
+}
+
+.input-container{
+    display: flex-end;
+    justify-content: center;
+    align-items: center;
+    margin-right: 60px;
+    margin-left: 40px;
+    padding-bottom: 30px;
+}
+
+.input-container input, select{
+    width: 200px;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    border: 1px solid #1b378d;
+    padding-left: 10px;
+    margin-left: 10px;
+    margin-right: 20px;
+    margin-top: 15px;
+}
+
+.input-container #codigo{
+    margin-left: 78px;
+}
+
+.input-container #nombre{
+    margin-left: 70px;
+}
+
+.input-container #descripcion{
+    margin-left: 30px;
+}
+
+.input-container #precio{
+    margin-left: 89px;
+}
+
+.input-container #stock{
+    margin-left: 97px;
+}
+
+.input-container label{
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: black;
+    margin-right: 10px;
+}
+
+.button-container{
+    display: flex-end;
+    text-align: center;
+    justify-content: center;
+    width: 300px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    margin-right: 70px;
+}
+
+.button-container button{
+    width: 200px;
+    height: 35px;
+    border-radius: 5px;
+    border: 1px solid #1b378d;
+    background: #1b378d;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+table{
+    width: 100%;
+    border: 2px solid #1b378d;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+table thead{
+    background: #1b378d;
+    color: white;
+}
+
+table th, td{
+    border: 2px solid rgb(27, 55, 141);
+    padding: 8px;
+    text-align: center;
+}
+
+table td form{
+    width: 200px;
+    margin: 0;
+}
+table td form .funcion{
+    display: flex; /* Flexbox para alinear en fila */
+    align-items: center; /* Alinea verticalmente */
+    justify-content: center; /* Alinea los elementos a la izquierda */
+    gap: 10px; /* Espacio entre input y botón */
+    margin-left: 150px; /* Elimina márgenes extra */
+}
+
+table td form #stockIncremento {
+    width: 120px; /* Ancho fijo adecuado */
+    height: 30px; 
+    border-radius: 5px;
+    font-size: 15px;
+    padding-left: 10px;
+    margin: 0; /* Sin márgenes externos */
+}
+
+.funcion button{
+    width: 150px; 
+    height: 25px; /* Ajustado a una altura menor para alineación */
+    border-radius: 5px;
+    background: #1b378d;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0; /* Sin márgenes extra */
+}
+
+
+
+
+

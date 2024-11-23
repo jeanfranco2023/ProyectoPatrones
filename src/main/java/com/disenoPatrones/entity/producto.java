@@ -1,74 +1,104 @@
 package com.disenoPatrones.entity;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table (name = "producto")
-public class producto {
+public class Producto {
     
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id_producto")
+    private int idProducto;
 
     @Column(unique = true)
-    private String nombre;
+    private String codigoProducto;
 
-    private String descripcion;
+    @Column(unique = true)
+    private String nombreProducto;
 
-    private double precio;
+    private String descripcionProducto;
 
-    private int stock;
+    private double precioProducto;  
 
-    public producto() {
+    private int stockProducto;
+
+    @OneToMany(mappedBy = "producto")
+    private List<DetalleVenta> detallesVentas;
+
+    public Producto() {
     }
 
-    public producto(String nombre, String descripcion, double precio, int stock) {
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.precio = precio;
-        this.stock = stock;
+    public Producto(String codigoProducto, String nombreProducto, String descripcionProducto, double precioProducto, int stockProducto) {
+        this.codigoProducto = codigoProducto;
+        this.nombreProducto = nombreProducto;
+        this.descripcionProducto = descripcionProducto;
+        this.precioProducto = precioProducto;
+        this.stockProducto = stockProducto;
     }
 
-    public int getId() {
-        return id;
+    public int getIdProducto() {
+        return idProducto;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdProducto(int idProducto) {
+        this.idProducto = idProducto;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getCodigoProducto() {
+        return codigoProducto;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setCodigoProducto(String codigoProducto) {
+        this.codigoProducto = codigoProducto;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String getNombreProducto() {
+        return nombreProducto;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setNombreProducto(String nombreProducto) {
+        this.nombreProducto = nombreProducto;
     }
 
-    public double getPrecio() {
-        return precio;
+    public String getDescripcionProducto() {
+        return descripcionProducto;
     }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
+    public void setDescripcionProducto(String descripcionProducto) {
+        this.descripcionProducto = descripcionProducto;
     }
 
-    public int getStock() {
-        return stock;
+    public double getPrecioProducto() {
+        return precioProducto;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setPrecioProducto(double precioProducto) {
+        this.precioProducto = precioProducto;
+    }
+
+    public int getStockProducto() {
+        return stockProducto;
+    }
+
+    public void setStockProducto(int stockProducto) {
+        this.stockProducto = stockProducto;
+    }
+
+    public List<DetalleVenta> getDetallesVentas() {
+        return detallesVentas;
+    }
+
+    public void setDetallesVentas(List<DetalleVenta> detallesVentas) {
+        this.detallesVentas = detallesVentas;
     }
     
 }

@@ -36,14 +36,23 @@ body {
     justify-content: center;
     align-items: center;
 }
-
-h2 {
+h1 {
     text-align: center;
-    color: #1a2c5b;
-    margin-bottom: 20px;
+    font-family: "Kanit";
+    color: #1D039C;
+    margin-bottom: 15px;
+}
+h2 {
+    margin-top: -30px;
+    text-align: center;
+    font-family: "Kanit";
+    color: #0a0a0a;
+    margin-bottom: 3px;
+    
 }
 
 form {
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -53,6 +62,7 @@ form {
 
 label {
     margin-bottom: 5px;
+    font-family:  "Faculty Glyphic";
     font-weight: bold;
     color: #333;
     width: 100%;
@@ -62,16 +72,23 @@ label {
 .dni-input {
     display: flex;
     align-items: center;
+    font-family:  "Faculty Glyphic";
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
     overflow: hidden;
     width: 105%;
 }
+.dni-input #dni {
+    
+    font-family:  "Faculty Glyphic";
+    
+}
 
 .dni-input span {
     padding: 8px 12px;
-    background-color: #1a2c5b;
+    font-family:  "Faculty Glyphic";
+    background-color: #1D039C;
     color: #fff;
     font-weight: bold;
 }
@@ -85,6 +102,7 @@ label {
 
 input[type="password"] {
     padding: 8px;
+    font-family:  "Faculty Glyphic";
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -94,8 +112,10 @@ input[type="password"] {
 
 button {
     padding: 10px;
+    margin-top: 70px;
+    font-family: "Faculty Glyphic";
     width: 100%;
-    background-color: #1a2c5b;
+    background-color: #1D039C;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -103,6 +123,5 @@ button {
 }
 
 button:hover {
-    background-color: #0f2046;
+    background-color: #0f2046;
 }
-
