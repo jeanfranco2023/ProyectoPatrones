@@ -2,42 +2,100 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Principal Admin</title>
+    <title>Menu Dashboard</title>
+    <!-- BOX ICONS -->
+    <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
+    <!-- CUSTOM CSS -->
     <link rel="stylesheet" href="/css/principalAdmin.css">
-    <script src="/js/menu.js"></script>
+    <!-- CUSTOM JS -->
+    <script src="/js/menu.js" defer></script>
 </head>
 <body>
-    <header>
-        <p>Ferreteria TUSIGOOD</p>
-        <div class="user-menu">
-            <nav class="nav">
-                <a th:href="@{/registro}">Registrar de usuarios</a>
-                <a href="#">Resumen de ventas</a>
-            </nav>
-            <p>Bienvenido Usuario</p>
-            <img class="user-img" src="../img/user.png" alt="USER.PET" width="50" height="50">
-            <div class="dropdown-menu">
-                <a th:href="@{/registroProducto}">Registrar producto</a>
-                <a th:href="@{/registrarCliente}">Registrar cliente</a>
-                <a th:href="@{/registroVentas}">Registrar venta</a>
-                <a href="#">Cerrar Sesión</a>
+    <div class="menu-dashboard">
+        <!-- TOP MENU -->
+        <div class="top-menu">
+            <div class="logo">
+                <img src="./img/ferreteria.png" alt="Logo" width="50" height="50">
+                <div class="texto">
+                    <span>Ferreteria</span>
+                    <span>TUSSIGOOD</span>
+                </div>
+            </div>
+            <div class="toggle">
+                <i class='bx bx-menu'></i>
             </div>
         </div>
-    </header>
-    <main>
-        <h2>Gráfico de Ventas por Cliente</h2>
-        <canvas id="ventasChart" width="400" height="400"></canvas>
+        <!-- INPUT SEARCH -->
+        <div class="input-search">
+            <i class='bx bx-search'></i>
+            <input type="text" class="input" placeholder="Buscar">
+        </div>
+        <!-- MENU -->
+        <div class="menu">
+            <div class="enlace">
+                <i class="bx bx-grid-alt"></i>
+                <span>Dashboard</span>
+            </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <div class="enlace">
+                <i class="bx bx-user"></i>
+                <span><a th:href="@{/registro}">Nuevo usuario</a></span>
+            </div>
 
-        <script src="/js/ventas.js"></script>
-    
-        <script>
-            const ventasPorCliente = /*[[${ventasPorCliente}]]*/ {};
-        </script>
-    <footer>
-       
-    </footer>
+            <div class="enlace">
+                <i class='bx bxs-factory'></i>
+                <span><a th:href="@{/registroProducto}">Registrar producto</a></span>
+            </div>
+
+            <div class="enlace">
+                <i class="bx bx-cart"></i>
+                <span><a th:href="@{/registroVentas}">Registrar venta</a></span>
+            </div>
+
+            <div class="enlace">
+                <i class='bx bxs-user-badge'></i>
+                <span><a th:href="@{/registrarCliente}">Nuevo cliente</a></span>
+            </div>
+
+            <div class="enlace">
+                <i class='bx bxs-lock' ></i>
+                <span> <a th:href="@{/index}">Cerrar Sesión</a></span>
+            </div>
+        </div>
+    </div>
+
+    <section class="home-section">
+        <div class="apartado1">
+            <h1>Tabla de ventas por empleado</h1>
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>N° de ventas</th>
+                        <th>Monto generado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Carlos</td>
+                        <td>Alvarez</td>
+                        <td>5</td>
+                        <td>500</td>
+            </table>
+        </div>
+        <div class="apartado2">
+            
+        </div>
+        <div class="apartado3">
+            <h1>Grafico de ventas</h1>
+
+        </div>
+        <div class="apartado4">
+            
+        </div>
+    </section>  
 </body>
 </html>

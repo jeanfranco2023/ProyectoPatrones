@@ -1,105 +1,223 @@
+/* FONTS GOOGLE */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+
+/* VARIABLES */
+
+:root {
+    --blanco: #E0E0E0;
+    --azul-opacidad: #184463;
+    --bg-menu: #003053;
+    --bg-body: #C7E1FF;
+}
+
+/* GENERALES */
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body{
-    font-family: 'Roboto', sans-serif;
-    background: #f5f5f5;
+body {
+    display: flex;
+    min-height: 100vh;
+    font-family: 'Quicksand', sans-serif;
+    color: var(--blanco);
 }
 
-header{
-    display: flex;
+.home-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-left: 20px;      /* Deja espacio para el menú lateral */
+    flex-grow: 1;            /* Ocupa el espacio restante */
+    padding: 20px;           /* Añade margen interior */
+    transition: margin-left .3s ease;
+}
+
+.home-section .apartado1 , .apartado2, .apartado3, .apartado4 {
+    margin-right: 20px;
+    margin-bottom: 20px;
+    color: var(--bg-menu);
+    border: #003053 1px solid;
+    border-radius: 9px 9px 0 0;
+}
+
+.home-section .apartado1 h1{
+    background-color: #003053;
+    padding: 10px;
     text-align: center;
-    align-items: center;
-    justify-content: space-between; 
-    background: #1b378d;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding-bottom: 20px;
-    padding-top: 20px;
-    padding-left: 30px;
-    padding-right: 60px;
-    height: 70px;
+    color: var(--blanco);
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 20px;
 }
 
-header p{
-    color: white;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-size: 30px;
-    font-weight: 500;
-    margin-left: 30px;
+.home-section .apartado1 table {
+    width: 80%;
+    margin: 0 auto;
+    border: black 1px solid;
+    border-collapse: collapse;
+}
+
+.home-section .apartado1 th, td {
+    border: black 1px solid;
+    padding: 5px;
 }
 
 
-.user-menu {
+.menu-dashboard.open ~ .home-section {
+    margin-left: 20px;      /* Más espacio cuando el menú está expandido */
+}
+
+/* Contenido interno del home-section */
+.home-content {
+    background-color: white;     /* Fondo claro */
+    color: black;                /* Color de texto */
+    padding: 20px;               /* Espaciado interno */
+    border-radius: 8px;          /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* LAYOUT */
+
+.menu-dashboard {
+    max-width: 150px;
+    height: 125vh;
+    background: var(--bg-menu);
+    padding: 20px;
+    transition: max-width .3s ease;
+}   
+
+.top-menu {
     display: flex;
     align-items: center;
-    justify-content: center;
-    position: relative; /* Asegura que el dropdown-menu se posicione en relación a este contenedor */
+    justify-content: space-between;
 }
 
-.user-menu p {
-    color: white;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-size: 20px;
-    font-weight: 500;
-    margin-right: 10px;
-}
-
-.user-menu .nav{
+.top-menu .logo {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-right: 160px;
 }
 
+.top-menu .logo .texto{
+    flex-direction: column;
+    align-items: flex-start;
 
-.user-menu .nav a{
-    color: white;
-    text-decoration: none;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-size: 20px;
+    margin-left: 20px;
+}
+
+.top-menu .logo .texto a{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 25px;
     font-weight: bold;
-    margin-left: 40px;
 }
 
-.dropdown-menu {
+.top-menu .logo img {
+    width: 40px;
+    transition: width .3s ease;
+}
+
+.top-menu .logo span {
+    font-size: 20px;
+    margin-left: 20px;
     display: none;
-    position: absolute;
-    top: 50px; /* Esto asegura que el menú se coloque justo debajo del header o botón */
-    right: 10px;
-    background-color: #f9f9f9;
-    box-shadow: 4px 8px 16px 4px rgba(0, 0, 0, 0.2);
-    z-index: 1;
-    width: 180px;
-    border-radius: 8px;
-    margin-right: -54px;
 }
 
-.dropdown-menu a {
-    color: black;
-    padding: 12px 16px;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-size: 15px;
-    font-weight: 500;
+.top-menu .logo span a{
+    font-size: 20px;
+    color: var(--blanco);
     text-decoration: none;
-    display: block;
 }
 
-.dropdown-menu a:hover {
-    background-color: #b2b9d5;
+.top-menu .toggle {
+    width: 30px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.top-menu .toggle i {
+    font-size: 35px;
+}
+
+/* INPUT BOX */
+
+.input-search {
+    width: 100%;
+    margin: 50px 0;
+    background-color: var(--azul-opacidad);
+    padding: 15px;
     border-radius: 8px;
+    display: flex;
+    align-items: center;
 }
 
-.dropdown-menu.show {
+.input-search i {
+    font-size: 30px;
+    margin-right: 20px;
+}
+
+.input-search .input {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    width: 100%;
+    height: 30px;
+    color: var(--blanco);
+    font-size: 22px;
+    display: none;
+}
+
+/* ENLACES MENU */
+
+.menu .enlace {
+    width: 100%;
+    padding: 20px 0 20px 17px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: all .3s ease;
+}
+
+.menu .enlace:hover {
+    background: var(--azul-opacidad);
+}
+
+.menu .enlace i {
+    margin-right: 20px;
+    font-size: 25px;
+}
+
+.menu .enlace span {
+    opacity: 0;
+    transition: opacity .3s ease;
+}
+
+.menu-dashboard.open {
+    max-width: 300px;
+}
+
+.menu-dashboard.open .top-menu .logo span {
     display: block;
 }
 
-main  {
-    height: 80vh;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    margin-left: 120px;
-    margin-right: 80px;
+.menu-dashboard.open .input-search
+.menu-dashboard.open .menu .enlace {
+    width: auto;
+}
+
+.menu-dashboard.open .input-search .input {
+    display: block;
+}
+
+.menu-dashboard.open .menu .enlace {
+    padding: 20px;
+}
+
+.menu-dashboard.open .menu .enlace span {
+    opacity: 1;
 }
