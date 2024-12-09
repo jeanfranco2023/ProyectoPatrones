@@ -26,3 +26,21 @@ document.addEventListener("DOMContentLoaded", function () {
         event.stopPropagation();
     });
 });
+
+function redirigirSegunSesion(event) {
+    event.preventDefault(); // Evita la acción predeterminada del enlace
+
+    // Aquí tu lógica de redirección
+    var usuarioIniciado = /*[[${usuarioIniciado != null}]]*/ false;
+    var esAdmin = /*[[${usuarioIniciado?.isAdmin}]]*/ false;
+
+    if (usuarioIniciado) {
+        if (esAdmin) {
+            window.location.href = "/principalAdmin";
+        } else {
+            window.location.href = "/registroVentas";
+        }
+    } else {
+        window.location.href = "/index";
+    }
+}

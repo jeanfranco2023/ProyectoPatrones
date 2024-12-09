@@ -3,11 +3,11 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.disenoPatrones.entity.Producto;
+import com.disenoPatrones.entity.producto;
 
-public interface ProductoRepository extends JpaRepository<Producto, Integer> {
-    Optional<Producto> findByCodigoProducto(String codigoProducto);
+public interface Productorepository extends JpaRepository<producto, Integer> {
+    Optional<producto> findByCodigoProducto(String codigoProducto);
 
-    Optional<Producto> findByNombreProducto(String nombreProducto);
+    Optional<producto> findByNombreProducto(String nombreProducto);
 
 }

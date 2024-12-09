@@ -20,15 +20,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.disenoPatrones.dto.Login;
 import com.disenoPatrones.entity.DetalleVenta;
-import com.disenoPatrones.entity.Producto;
+import com.disenoPatrones.entity.producto;
 import com.disenoPatrones.entity.Venta;
 import com.disenoPatrones.entity.cliente;
 import com.disenoPatrones.entity.usuario;
-import com.disenoPatrones.repository.ProductoRepository;
+import com.disenoPatrones.repository.Productorepository;
 import com.disenoPatrones.repository.VentaRepository;
 import com.disenoPatrones.repository.UsuarioRepository;
 import com.disenoPatrones.repository.clienteRepository;
 import com.disenoPatrones.repository.detalleVentaReporsitory;
+import com.disenoPatrones.service.ProductoService;
 import com.disenoPatrones.service.UsuarioService;
 import com.disenoPatrones.service.clienteService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -40,11 +41,11 @@ public class mainController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-     @Autowired
+    @Autowired
     private UsuarioService usuarioService;
 
     @Autowired
-    private ProductoRepository productoRepository; 
+    private Productorepository productoRepository;
 
     @Autowired
     private VentaRepository VentaRepository;
@@ -60,10 +61,11 @@ public class mainController {
 
     private usuario usuarioIniciado;
 
+    @Autowired
+    private ProductoService productoService;
 
-
-    //Login
-@GetMapping("/index")
+    // Login
+    @GetMapping("/index")
     public String verVista(Model model) {
         model.addAttribute("login", new Login());
         return "index";
@@ -93,17 +95,15 @@ public class mainController {
         return "redirect:/index";
     }
 
-
-
-
-    //Registro de ventas - principal usuario
+    // Registro de ventas - principal usuario
     @GetMapping("/registroVentas")
     public String mostrarVistaVentas(Model model) {
         List<cliente> clientes = clienteRepository.findAll();
-        List<Producto> productos = productoRepository.findAll();
+        List<producto> productos = productoRepository.findAll();
 
         // Agregar datos al modelo para que estén disponibles en la vista
         model.addAttribute("clientes", clientes);
+        model.addAttribute("usuarioIniciado", usuarioIniciado);
         model.addAttribute("productos", productos);
 
         return "principalUsuario";
@@ -121,30 +121,28 @@ public class mainController {
 
     @GetMapping("/producto/buscarPorCodigo/{codigoProducto}")
     public ResponseEntity<?> buscarProductoPorCodigo(@PathVariable String codigoProducto) {
-    try {
-        Producto producto = productoRepository.findByCodigoProducto(codigoProducto)
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado con el código: " + codigoProducto));
-        
-        // Crear respuesta en formato JSON
-        Map<String, Object> respuesta = new HashMap<>();
-        respuesta.put("nombreProducto", producto.getNombreProducto());
-        respuesta.put("descripcionProducto", producto.getDescripcionProducto());
-        respuesta.put("precioProducto", producto.getPrecioProducto());
-        respuesta.put("stockProducto", producto.getStockProducto());
+        try {
+            producto producto = productoRepository.findByCodigoProducto(codigoProducto)
+                    .orElseThrow(() -> new RuntimeException("Producto no encontrado con el código: " + codigoProducto));
 
-        return ResponseEntity.ok(respuesta);
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-    }
+            // Crear respuesta en formato JSON
+            Map<String, Object> respuesta = new HashMap<>();
+            respuesta.put("nombreProducto", producto.getNombreProducto());
+            respuesta.put("descripcionProducto", producto.getDescripcionProducto());
+            respuesta.put("precioProducto", producto.getPrecioProducto());
+            respuesta.put("stockProducto", producto.getStockProducto());
+
+            return ResponseEntity.ok(respuesta);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @PostMapping("/registra/venta")
     public String registrarVenta(
-            @RequestParam String nombreCliente, 
+            @RequestParam String nombreCliente,
             @RequestParam String productosJson,
             @RequestParam String fecha) {
-    
-                System.out.println("Nombre del cliente recibido: " + nombreCliente);
     
         try {
             // Validar datos de entrada
@@ -167,63 +165,76 @@ public class mainController {
                 throw new RuntimeException("No hay un usuario logueado actualmente.");
             }
     
+            // Parsear JSON de productos
             ObjectMapper objectMapper = new ObjectMapper();
-                List<Map<String, Object>> productos = objectMapper.readValue(productosJson, new TypeReference<List<Map<String, Object>>>() {});
-                System.out.println("Productos recibidos: " + productos);
+            List<Map<String, Object>> productos = objectMapper.readValue(productosJson,
+                    new TypeReference<List<Map<String, Object>>>() {
+                    });
+            System.out.println("Productos recibidos: " + productos);
     
-            // Crear venta
+            // Crear la venta
             Venta venta = new Venta();
             venta.setCliente(cliente);
             venta.setUsuario(usuarioIniciado); // Asociar el usuario logueado
-            venta.setNombreUsuario(usuarioIniciado.getNombre()+" "+usuarioIniciado.getApellido()); // Guardar el nombre del usuario
+            venta.setNombreUsuario(usuarioIniciado.getNombre() + " " + usuarioIniciado.getApellido());
             venta.setFecha(Date.valueOf(fecha));
             venta.setMontoVenta(0); // Se calculará más adelante
     
             Venta ventaGuardada = VentaRepository.save(venta);
     
+            // Procesar los productos y calcular el total de la venta
             double totalVenta = 0;
-                for (Map<String, Object> productoData : productos) {
-                    String nombreProducto = (String) productoData.get("nombre");
-                    double precio = ((Number) productoData.get("precio")).doubleValue();
-                    int cantidad = (int) productoData.get("cantidad");
-                    double total = ((Number) productoData.get("total")).doubleValue();
-        
-                    Producto producto = productoRepository.findByNombreProducto(nombreProducto)
-                            .orElseThrow(() -> new RuntimeException("Producto no encontrado: " + nombreProducto));
-        
-                    if (producto.getStockProducto() < cantidad) {
-                        throw new RuntimeException("Stock insuficiente para el producto: " + nombreProducto);
-                    }
-        
-                    DetalleVenta detalleVenta = new DetalleVenta();
-                    detalleVenta.setVenta(ventaGuardada);
-                    detalleVenta.setProducto(producto);
-                    detalleVenta.setCantidad(cantidad);
-                    detalleVenta.setPrecioUnitario(precio);
-                    detalleVenta.setTotal(total);
-        
-                    detalleVentaRepository.save(detalleVenta);
-        
-                    producto.setStockProducto(producto.getStockProducto() - cantidad);
-                    productoRepository.save(producto);
-        
-                    totalVenta += total;
-                }
-                ventaGuardada.setMontoVenta(totalVenta);
-                VentaRepository.save(ventaGuardada);
+            for (Map<String, Object> productoData : productos) {
+                String nombreProducto = (String) productoData.get("nombre");
+                double precio = ((Number) productoData.get("precio")).doubleValue();
+                int cantidad = (int) productoData.get("cantidad");
+                double total = ((Number) productoData.get("total")).doubleValue();
     
+                // Buscar el producto en la base de datos
+                producto producto = productoRepository.findByNombreProducto(nombreProducto)
+                        .orElseThrow(() -> new RuntimeException("Producto no encontrado: " + nombreProducto));
+    
+                // Validar disponibilidad del stock
+                if (producto.getStockProducto() < cantidad) {
+                    throw new RuntimeException("Stock insuficiente para el producto: " + nombreProducto);
+                }
+    
+                // Actualizar stock del producto
+                producto.setStockProducto(producto.getStockProducto() - cantidad);
+                productoRepository.save(producto);
+    
+                // Crear y guardar detalle de venta
+                DetalleVenta detalleVenta = new DetalleVenta();
+                detalleVenta.setVenta(ventaGuardada);
+                detalleVenta.setProducto(producto);
+                detalleVenta.setCantidad(cantidad);
+                detalleVenta.setPrecioUnitario(precio);
+                detalleVenta.setTotal(total);
+    
+                detalleVentaRepository.save(detalleVenta);
+    
+                // Sumar al total de la venta
+                totalVenta += total;
+            }
+    
+            // Actualizar el monto total de la venta
+            ventaGuardada.setMontoVenta(totalVenta);
+            VentaRepository.save(ventaGuardada);
     
             return "redirect:/registroVentas";
+    
         } catch (Exception e) {
             System.err.println("Error al registrar la venta: " + e.getMessage());
-            throw new RuntimeException("Error al registrar la venta: " + e.getMessage());
+            return "redirect:/registroVentas?error=true";
         }
     }
+    
 
-    //Registro de usuarios - empelados
+    // Registro de usuarios - empelados
     @GetMapping("/registro")
     public String mostrarVistaRegistro(Model model) {
         model.addAttribute("usuario", new usuario());
+        model.addAttribute("usuarioIniciado", usuarioIniciado);
         model.addAttribute("usuarios", usuarioRepository.findAll());
         return "registro";
     }
@@ -232,7 +243,7 @@ public class mainController {
     public String guardarOActualizarUsuario(@ModelAttribute("usuario") usuario usuario) {
         try {
             usuarioRepository.save(usuario);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return "redirect:/registro";
         }
         return "redirect:/registro";
@@ -243,79 +254,82 @@ public class mainController {
         usuarioRepository.deleteById(id);
         return "redirect:/registro";
     }
-    
+
     @GetMapping("/usuarios/edit/{id}")
     public String editarUsuario(@PathVariable Integer id, Model model) {
         usuario usuario = usuarioRepository.findById(id)
-                               .orElseThrow(() -> new IllegalArgumentException("ID de usuario inválido:" + id));
+                .orElseThrow(() -> new IllegalArgumentException("ID de usuario inválido:" + id));
         model.addAttribute("usuario", usuario);
         model.addAttribute("usuarios", usuarioRepository.findAll());
         return "registro";
     }
 
-    
-
-    //Principal Administrador
+    // Principal Administrador
     @GetMapping("/principalAdmin")
     public String principalAdmin(Model model) {
-        model.addAttribute("usuario", usuarioIniciado);
+        model.addAttribute("usuarioIniciado", usuarioIniciado);
         List<Venta> ventas = VentaRepository.findAll();
         Map<String, Double> ventasPorCliente = ventas.stream()
-        .collect(Collectors.groupingBy(
-            venta -> venta.getCliente().getNombreCliente(),
-            Collectors.summingDouble(Venta::getMontoVenta)
-        ));
+                .collect(Collectors.groupingBy(
+                        venta -> venta.getCliente().getNombreCliente(),
+                        Collectors.summingDouble(Venta::getMontoVenta)));
 
-    model.addAttribute("ventasPorCliente", ventasPorCliente);
-    return "principalAdmin";
+        model.addAttribute("ventasPorCliente", ventasPorCliente);
+        return "principalAdmin";
     }
 
-
-    //Registro de productos
+    // Registro de productos
     @GetMapping("/registroProducto")
     public String registrarProducto(Model model) {
-        model.addAttribute("producto", new Producto());
-        model.addAttribute("productos", productoRepository.findAll());
+        model.addAttribute("producto", new producto());
+        model.addAttribute("productos", productoService.listarProductos());
         return "registroDeProductos";
     }
 
     @PostMapping("/registrar/producto")
-    public String guardarOActualizarProducto(@ModelAttribute("producto") Producto producto) {
+    public String guardarProducto(@RequestParam String codigoProducto,
+            @RequestParam String nombreProducto,
+            @RequestParam String descripcionProducto,
+            @RequestParam double precioProducto,
+            @RequestParam int stockProducto) {
         try {
-            productoRepository.save(producto);
-        } catch(Exception e) {
+            productoService.crearYGuardarProducto(codigoProducto, nombreProducto, descripcionProducto, precioProducto,
+                    stockProducto);
+        } catch (Exception e) {
             return "redirect:/registroProducto";
         }
         return "redirect:/registroProducto";
-        }
+    }
 
-        @GetMapping("/productos/edit/{id}")
-        public String editarProducto(@PathVariable Integer id, Model model) {
-        Producto producto = productoRepository.findById(id)
-                       .orElseThrow(() -> new IllegalArgumentException("ID de producto inválido:" + id));
+    @GetMapping("/productos/edit/{id}")
+    public String editarProducto(@PathVariable Integer id, Model model) {
+        producto producto = productoService.buscarProductoPorCodigo(id.toString())
+                .orElseThrow(() -> new IllegalArgumentException("ID de producto inválido: " + id));
         model.addAttribute("producto", producto);
-        model.addAttribute("productos", productoRepository.findAll());
+        model.addAttribute("productos", productoService.listarProductos());
         return "registroDeProductos";
-        }
+    }
 
-        @PostMapping("/productos/updateStock")
-        public String actualizarStockProducto(@RequestParam("id") Integer id, @RequestParam("stockIncremento") Integer stockIncremento) {
-            Producto productoExistente = productoRepository.findById(id)
-                    .orElseThrow(() -> new IllegalArgumentException("ID de producto inválido: " + id));
-            
-            // Incrementar el stock actual con el valor proporcionado
-            productoExistente.setStockProducto(productoExistente.getStockProducto() + stockIncremento);
-            productoRepository.save(productoExistente);
-            
-            return "redirect:/registroProducto";
-        }
+    @PostMapping("/productos/updateStock")
+    public String actualizarStockProducto(@RequestParam("id") Integer id,
+            @RequestParam("stockIncremento") Integer stockIncremento) {
+        producto productoExistente = productoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID de producto inválido: " + id));
 
+        // Incrementar el stock actual con el valor proporcionado
+        productoExistente.setStockProducto(productoExistente.getStockProducto() + stockIncremento);
+        productoRepository.save(productoExistente);
 
+        productoService.actualizarStockProducto(id, productoExistente.getStockProducto());
 
-    //Registro de clientes
-        @GetMapping("/registrarCliente")
-        public String registrarCliente(Model model) {
+        return "redirect:/registroProducto";
+    }
+
+    // Registro de clientes
+    @GetMapping("/registrarCliente")
+    public String registrarCliente(Model model) {
         model.addAttribute("cliente", new cliente());
+        model.addAttribute("usuarioIniciado", usuarioIniciado);
         model.addAttribute("clientes", clienteRepository.findAll());
         return "registroCliente";
     }
@@ -324,7 +338,7 @@ public class mainController {
     public String guardarOActualizarCliente(@ModelAttribute("cliente") cliente cliente) {
         try {
             clienteRepository.save(cliente);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return "redirect:/registrarCliente";
         }
         return "redirect:/registrarCliente";
@@ -339,10 +353,10 @@ public class mainController {
     @GetMapping("/clientes/edit/{id}")
     public String editarCliente(@PathVariable Integer id, Model model) {
         cliente cliente = clienteRepository.findById(id)
-                               .orElseThrow(() -> new IllegalArgumentException("ID de cliente inválido:" + id));
+                .orElseThrow(() -> new IllegalArgumentException("ID de cliente inválido:" + id));
         model.addAttribute("cliente", cliente);
         model.addAttribute("clientes", clienteRepository.findAll());
         return "registroCliente";
     }
-    
+
 }

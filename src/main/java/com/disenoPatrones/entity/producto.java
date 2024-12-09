@@ -2,6 +2,10 @@ package com.disenoPatrones.entity;
 
 import java.util.List;
 
+import com.disenoPatrones.service.State.EstadoAgotado;
+import com.disenoPatrones.service.State.EstadoDisponible;
+import com.disenoPatrones.service.State.EstadoProducto;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,10 +13,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table (name = "producto")
-public class Producto {
+public class producto {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,13 +36,16 @@ public class Producto {
 
     private int stockProducto;
 
+    @Transient
+    private EstadoProducto estadoProducto;
+
     @OneToMany(mappedBy = "producto")
     private List<DetalleVenta> detallesVentas;
 
-    public Producto() {
+    public producto() {
     }
 
-    public Producto(String codigoProducto, String nombreProducto, String descripcionProducto, double precioProducto, int stockProducto) {
+    public producto(String codigoProducto, String nombreProducto, String descripcionProducto, double precioProducto, int stockProducto) {
         this.codigoProducto = codigoProducto;
         this.nombreProducto = nombreProducto;
         this.descripcionProducto = descripcionProducto;
@@ -99,6 +107,22 @@ public class Producto {
 
     public void setDetallesVentas(List<DetalleVenta> detallesVentas) {
         this.detallesVentas = detallesVentas;
+    }
+
+     public void actualizarEstado() {
+        if (stockProducto > 100) {
+            estadoProducto = new EstadoDisponible();
+        } else {
+            estadoProducto = new EstadoAgotado();
+        }
+    }
+
+    public EstadoProducto getEstado() {
+        return estadoProducto;
+    }
+
+    public void setEstado(EstadoProducto estadoProducto) {
+        this.estadoProducto = estadoProducto;
     }
     
 }

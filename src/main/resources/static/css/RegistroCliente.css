@@ -28,7 +28,7 @@ header{
     height: 70px;
 }
 
-header p{
+header .ubicacion p{
     color: white;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: 30px;
@@ -91,7 +91,8 @@ main{
     margin-left: 240px;
     margin-right: 240px;
     margin-top: 50px;
-    padding-bottom: 25px;
+    margin-bottom: 40px;
+    padding-bottom: 45px;
 }
 
 form h1{
@@ -106,14 +107,10 @@ form h1{
 .container{
     display: flex;
     justify-content: center;
-    margin-top: 10px;
+    margin-top: -10px;
     margin-bottom: -20px;
-
 }
 .input-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     width: 400px;
     padding-top: 10px;
     margin-left: 20px;
@@ -121,34 +118,18 @@ form h1{
 }
 
 .input-container input{
-
     font-size: 15px;
     font-family: "Faculty Glyphic",Arial, Helvetica, sans-serif;
     width: 280px;
     height: 30px;
     border-radius: 5px;
     border: 1px solid #000000;
-    padding-left: 5px;
-    margin-bottom: 5px;
+    padding-left: 10px;
+    margin-top: 10px;
 }
 .input-container label{
-    margin-right: 15px;
-    width: 80px;
     font-family: "Faculty Glyphic",Arial, Helvetica, sans-serif;
 }
-.container button{
-    font-size: 15px;
-    font-family: "Faculty Glyphic",Arial, Helvetica, sans-serif;
-    width: 180px;
-    height: 30px;
-    border-radius: 5px;
-    border: 1px solid #000000;
-    padding-left: 10px;
-    margin-top: 25px;
-    margin-left: 150px;
-    background-color: #f2f2ff;
-}
-
 .button-container{
     display: block;
     align-items: center;
@@ -170,6 +151,7 @@ form h1{
     border-radius: 5px;
     cursor: pointer;
     margin-top: 25px;
+    border: #5d5e63 1px solid;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 

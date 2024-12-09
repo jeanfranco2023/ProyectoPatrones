@@ -21,7 +21,7 @@ public class DetalleVenta {
 
     @ManyToOne
     @JoinColumn(name = "idProducto")  
-    private Producto producto;
+    private producto producto;
 
     private int cantidad;
     private double precioUnitario;
@@ -30,7 +30,7 @@ public class DetalleVenta {
     public DetalleVenta() {
     }
 
-    public DetalleVenta(Long idDetalle, Venta venta, Producto producto, int cantidad, double precioUnitario, double total) {
+    public DetalleVenta(Long idDetalle, Venta venta, producto producto, int cantidad, double precioUnitario, double total) {
         this.idDetalle = idDetalle;
         this.venta = venta;
         this.producto = producto;
@@ -55,11 +55,11 @@ public class DetalleVenta {
         this.venta = venta;
     }
 
-    public Producto getProducto() {
+    public producto getProducto() {
         return producto;
     }
 
-    public void setProducto(Producto producto) {
+    public void setProducto(producto producto) {
         this.producto = producto;
     }
 

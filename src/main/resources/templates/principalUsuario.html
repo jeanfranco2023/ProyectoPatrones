@@ -12,7 +12,10 @@
     <title>Registro de ventas</title>
 </head>
 <header>
-    <p>Ferreteria TUSIGOOD</p>
+    <a class="ubicacion" th:href="@{${usuarioIniciado != null ? (usuarioIniciado.isAdmin ? '/principalAdmin' : '/registroVentas') : '/index'}}"
+    style="text-decoration: none;">
+        <p>Ferretería TUSIGOOD</p>
+    </a>
     <div class="user-menu">
         <p>Bienvenido Usuario</p>
         <img class="user-img" src="../img/user.png" alt="USER.PET" width="50" height="50">
