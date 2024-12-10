@@ -1,4 +1,4 @@
-package com.disenoPatrones.service.abstractFactiry;
+package com.disenoPatrones.service.abstractFactory;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

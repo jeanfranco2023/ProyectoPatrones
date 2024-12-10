@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.disenoPatrones.entity.producto;
 import com.disenoPatrones.repository.Productorepository;
-import com.disenoPatrones.service.abstractFactiry.ProductoFactory;
+import com.disenoPatrones.service.abstractFactory.ProductoFactory;
 import com.disenoPatrones.service.observer.AlertaStockObserver;
 import com.disenoPatrones.service.observer.DashboardObserver;
 import com.disenoPatrones.service.observer.ProductoSubject;

@@ -1,4 +1,4 @@
-package com.disenoPatrones.service.abstractFactiry;
+package com.disenoPatrones.service.abstractFactory;
 
 import com.disenoPatrones.entity.producto;
 

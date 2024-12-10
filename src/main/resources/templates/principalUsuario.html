@@ -17,7 +17,7 @@
         <p>Ferretería TUSIGOOD</p>
     </a>
     <div class="user-menu">
-        <p>Bienvenido Usuario</p>
+        <p>Bienvenido <span th:text="${usuarioIniciado.nombre}"></span></p>
         <img class="user-img" src="../img/user.png" alt="USER.PET" width="50" height="50">
         <div class="dropdown-menu">
             <a th:href="@{/registroProducto}">Registrar producto</a>
