@@ -282,6 +282,7 @@ public class mainController {
     @GetMapping("/registroProducto")
     public String registrarProducto(Model model) {
         model.addAttribute("producto", new producto());
+        model.addAttribute("usuarioIniciado", usuarioIniciado);
         model.addAttribute("productos", productoService.listarProductos());
         return "registroDeProductos";
     }
